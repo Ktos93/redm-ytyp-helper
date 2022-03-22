@@ -123,13 +123,23 @@ ipcMain.on('setMLOInfo',(event, mloCoordData, mloRotData) => {
 })
 
 calculateOffset = (entityCoord, entityRotation, parentCoord, parentRotation) => {
-	let offsetCoord = {}
+
+        let offsetCoord = {}
 	offsetCoord.x = parentCoord.x - entityCoord.x
 	offsetCoord.y = parentCoord.y - entityCoord.y
-	offsetCoord.z = -(parentCoord.z - entityCoord.z)
+	offsetCoord.z = parentCoord.z - entityCoord.z
 
-	let entityQuat = new Quaternion(entityRotation.w, entityRotation.x, entityRotation.y, entityRotation.z)
+        let entityQuat = new Quaternion(entityRotation.w, entityRotation.x, entityRotation.y, entityRotation.z)
 	let parentQuat = new Quaternion(parentRotation.w, parentRotation.x, parentRotation.y, parentRotation.z)
+        let parentQuat2 = new Quaternion(parentRotation.w, parentRotation.x, parentRotation.y, parentRotation.z)
+
+        parentQuat.mul(offsetCoord)
+        parentQuat.inverse()
+        parentQuat.normalize()
+
+        parentQuat2.inverse()
+        parentQuat2.normalize()
+
 
 	// let entityInverse = entityQuat.inverse()
 	// let parentInverse = parentQuat.inverse()
